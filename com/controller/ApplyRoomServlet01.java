@@ -1,0 +1,55 @@
+package com.controller;
+
+import com.dao.MeetingDao;
+import com.dao.MeetingDaoImpl;
+import com.dao.RoomDao;
+import com.dao.RoomDaoImpl;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@WebServlet(name = "ApplyRoomServlet01" , urlPatterns = "/applyroom01")
+public class ApplyRoomServlet01 extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=UTF-8");
+        String roomname = request.getParameter("roomname");
+        String meetname = request.getParameter("meetname");
+        int predictnumber = Integer.parseInt(request.getParameter("predictnumber"));
+        String startTimeStr = request.getParameter("starttime");
+        String endTimeStr = request.getParameter("endtime");
+        // 将获取到的时间字符串转换为LocalDateTime对象
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        LocalDateTime startTime = LocalDateTime.parse(startTimeStr, formatter);
+        LocalDateTime endTime = LocalDateTime.parse(endTimeStr, formatter);
+// 将LocalDateTime对象转换为Timestamp对象
+        java.sql.Timestamp starttime = java.sql.Timestamp.valueOf(startTime);
+        java.sql.Timestamp endtime = java.sql.Timestamp.valueOf(endTime);
+        RoomDao roomdao = new RoomDaoImpl();
+        MeetingDao meetdao = new MeetingDaoImpl();
+        if(roomdao.addapply(roomname,meetname)&meetdao.addapply(roomname,meetname)){
+            String encodedMeetname = URLEncoder.encode(meetname, "UTF-8");
+            String encodedStarttime = URLEncoder.encode(String.valueOf(starttime), "UTF-8");
+            String encodedEndtime = URLEncoder.encode(String.valueOf(endtime), "UTF-8");
+            String encodedPredictnumber = URLEncoder.encode(String.valueOf(predictnumber), "UTF-8");
+            response.sendRedirect("applyroom?meetname=" + encodedMeetname + "&starttime=" + encodedStarttime + "&endtime=" + encodedEndtime + "&predictnumber=" + encodedPredictnumber);
+        }else{
+            String encodedMeetname = URLEncoder.encode(meetname, "UTF-8");
+            String encodedStarttime = URLEncoder.encode(String.valueOf(starttime), "UTF-8");
+            String encodedEndtime = URLEncoder.encode(String.valueOf(endtime), "UTF-8");
+            String encodedPredictnumber = URLEncoder.encode(String.valueOf(predictnumber), "UTF-8");
+            response.sendRedirect("applyroom?meetname=" + encodedMeetname + "&starttime=" + encodedStarttime + "&endtime=" + encodedEndtime + "&predictnumber=" + encodedPredictnumber);
+        }
+    }
+}
