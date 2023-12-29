@@ -1,5 +1,5 @@
 # system-of-meeting
-此为我学习基于mvc、mysql的会议系统，希望对您有帮助（我知道看这个的都是要抄作业的）
+此为我学习基于mvc、mysql的会议系统，希望对您有帮助（学生可入的基础系统，真的很基础）
 
 项目的功能如下
 ![image](https://github.com/genosaa/system-of-meeting/assets/131158019/c8cf3d84-d7ab-4688-afa8-d1d780a3e994)
